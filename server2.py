@@ -16,7 +16,8 @@ from flask_socketio import SocketIO
 # APP INITIALIZATION
 # ---------------------------------------------
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'driver_safety_monitor_secret_key'
+# Use env var for secret key in production, fallback to a default for local testing
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'driver_safety_monitor_secret_key')
 
 # Configure SocketIO for real-time updates
 socketio = SocketIO(app,
@@ -218,7 +219,8 @@ def handle_message(data):
 if __name__ == '__main__':
     # Use PORT env var when provided by hosting platforms (Render, Heroku, etc.)
     port = int(os.environ.get('PORT', 5000))
+    debug_flag = os.environ.get('DEBUG', 'False').lower() in ('1', 'true', 'yes')
     print(f"🚀 Starting Driver Monitoring Dashboard with EAR simulation on http://0.0.0.0:{port}")
     print("📡 Socket.IO server ready for connections")
-    # Keep debug=True for now so you see logs; set to False in production if desired
-    socketio.run(app, host='0.0.0.0', port=port, debug=True)
+    # Only enable Flask debug when explicitly requested via DEBUG env var
+    socketio.run(app, host='0.0.0.0', port=port, debug=debug_flag)

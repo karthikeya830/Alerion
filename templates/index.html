@@ -795,7 +795,9 @@
         // Socket.IO connection
         console.log("🚀 Attempting to connect to server...");
         
-        const socket = io('http://localhost:5000', {
+        // Connect to same host the page was served from (works on Render).
+        // Using relative connection ensures the client connects to the deployed host.
+        const socket = io({
             transports: ['websocket', 'polling']
         });
 
