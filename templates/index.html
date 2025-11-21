@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Driver Safety Monitor | EAR Detection System</title>
+    <title>Alerion | Driver Safety Monitor</title>
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
     <style>
         /* All your previous CSS styles remain the same */
@@ -213,9 +213,11 @@
             cursor: pointer;
             font-size: 12px;
             font-weight: 600;
+            margin-left: 5px;
         }
         .action-btn.contact { background: #4361ee; color: white; }
         .action-btn.view { background: #e2e8f0; color: #64748b; }
+        .action-btn.delete { background: #ef4444; color: white; }
         
         /* EAR Value Display */
         .ear-display {
@@ -260,52 +262,52 @@
             color: #ef4444;
         }
         .driver-contact-card {
-  background: #121212;
-  border-radius: 20px;
-  padding: 20px;
-  color: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  margin-top: 20px;
-  text-align: center;
-  transition: 0.3s ease;
-}
+            background: #121212;
+            border-radius: 20px;
+            padding: 20px;
+            color: white;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            margin-top: 20px;
+            text-align: center;
+            transition: 0.3s ease;
+        }
 
-.driver-contact-card:hover {
-  transform: scale(1.02);
-  box-shadow: 0 6px 16px rgba(0,0,0,0.6);
-}
+        .driver-contact-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.6);
+        }
 
-.contact-buttons {
-  margin-top: 15px;
-  display: flex;
-  justify-content: space-evenly;
-}
+        .contact-buttons {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-evenly;
+        }
 
-.btn {
-  text-decoration: none;
-  padding: 10px 20px;
-  border-radius: 25px;
-  font-weight: 600;
-  transition: all 0.2s;
-}
+        .btn {
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
 
-.call-btn {
-  background: #007bff;
-  color: white;
-}
+        .call-btn {
+            background: #007bff;
+            color: white;
+        }
 
-.call-btn:hover {
-  background: #0056b3;
-}
+        .call-btn:hover {
+            background: #0056b3;
+        }
 
-.whatsapp-btn {
-  background: #25D366;
-  color: white;
-}
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+        }
 
-.whatsapp-btn:hover {
-  background: #1EBE5B;
-}
+        .whatsapp-btn:hover {
+            background: #1EBE5B;
+        }
 
         /* Sensitivity settings */
         .sensitivity-controls {
@@ -453,14 +455,199 @@
             border-radius: 4px;
             transition: width 0.3s ease;
         }
+
+        /* Add Driver Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f1f5f9;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4361ee;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn-primary {
+            background: #4361ee;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-primary:hover {
+            background: #3a56d4;
+        }
+
+        .btn-secondary {
+            background: #e2e8f0;
+            color: #64748b;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background: #d1d9e6;
+        }
+
+        .add-driver-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background 0.3s;
+        }
+
+        .add-driver-btn:hover {
+            background: #0da271;
+        }
+
+        .driver-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #4361ee;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .driver-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .driver-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .driver-name {
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .driver-vehicle {
+            font-size: 14px;
+            color: #64748b;
+        }
     </style>
 </head>
 <body>
+    <!-- Add Driver Modal -->
+    <div id="addDriverModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Driver</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="addDriverForm">
+                <div class="form-group">
+                    <label for="driverName">Driver Name</label>
+                    <input type="text" id="driverName" placeholder="Enter driver's full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="driverPhone">Phone Number</label>
+                    <input type="tel" id="driverPhone" placeholder="Enter driver's phone number" required>
+                </div>
+                <div class="form-group">
+                    <label for="driverVehicle">Vehicle ID</label>
+                    <input type="text" id="driverVehicle" placeholder="Enter vehicle ID" required>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-secondary" id="cancelAddDriver">Cancel</button>
+                    <button type="submit" class="btn-primary">Add Driver</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <div class="container">
         <header>
             <div class="logo">
                 <div class="logo-icon">🚗</div>
-                <h1>Driver Safety Monitor <small style="font-size: 14px; color: #666;">with EAR Detection</small></h1>
+                <h1>Alerion <small style="font-size: 14px; color: #666;">Driver Safety Monitor</small></h1>
             </div>
             <div class="header-controls">
                 <div class="status-indicator">
@@ -482,23 +669,21 @@
                 <p>EAR Value: <span id="alertEarValue">0.000</span> (Threshold: 0.25)</p>
             </div>
         </div>
-            <!-- ===================================== -->
-<!-- 🚗 DRIVER CONTACT SECTION (NEW) -->
-<!-- ===================================== -->
-<div class="card driver-contact-card">
-  <h2 class="card-title">Driver Contact</h2>
-  <div class="driver-info">
-    <p><strong>Name:</strong> Ramesh Kumar</p>
-    <p><strong>Vehicle ID:</strong> MH12AB3456</p>
-    <p><strong>Mobile:</strong> +91 9876543210</p>
-  </div>
 
-  <div class="contact-buttons">
-    <a href="tel:+919876543210" class="btn call-btn">📞 Call Driver</a>
-    <a href="https://wa.me/919876543210" target="_blank" class="btn whatsapp-btn">💬 WhatsApp</a>
-  </div>
-</div>
+        <!-- Driver Contact Section -->
+        <div class="card driver-contact-card">
+            <h2 class="card-title">Driver Contact</h2>
+            <div class="driver-info">
+                <p><strong>Name:</strong> Ramesh Kumar</p>
+                <p><strong>Vehicle ID:</strong> MH12AB3456</p>
+                <p><strong>Mobile:</strong> +91 9876543210</p>
+            </div>
 
+            <div class="contact-buttons">
+                <a href="tel:+919876543210" class="btn call-btn">📞 Call Driver</a>
+                <a href="https://wa.me/919876543210" target="_blank" class="btn whatsapp-btn">💬 WhatsApp</a>
+            </div>
+        </div>
 
         <div id="sosAlert" class="alert-banner sos" style="display: none;">
             <div class="alert-icon-large">🚨</div>
@@ -597,7 +782,12 @@
             <div class="card drivers-card">
                 <div class="card-header">
                     <h2 class="card-title">👥 Active Drivers</h2>
-                    <div class="driver-count"><span id="activeDriversCount">0</span> Active</div>
+                    <div style="display: flex; align-items: center; gap: 15px;">
+                        <div class="driver-count"><span id="activeDriversCount">0</span> Active</div>
+                        <button class="add-driver-btn" id="addDriverBtn">
+                            <span>+</span> Add Driver
+                        </button>
+                    </div>
                 </div>
                 <div class="drivers-list" id="driversList">
                     <!-- Drivers will be loaded here -->
@@ -625,6 +815,18 @@
     </audio>
 
     <script>
+        // Global variables
+        let criticalAlertInterval = null;
+        let drivers = [
+            {id: 1, name: "John Driver", vehicle: "Truck A123", status: "safe", location: "Highway I-95", phone: "+1-555-0101"},
+            {id: 2, name: "Sarah Wilson", vehicle: "Van B456", status: "warning", location: "Route 66", phone: "+1-555-0102"},
+            {id: 3, name: "Mike Johnson", vehicle: "Car C789", status: "danger", location: "City Center", phone: "+1-555-0103"}
+        ];
+        let alertThreshold = 10.0;
+        let lastAlertTime = 0;
+        let currentEAR = 0.0;
+        let currentSensitivity = 1.0;
+
         // Enhanced Sound System with Fallbacks
         class SoundManager {
             constructor() {
@@ -792,10 +994,27 @@
         // Initialize Sound Manager
         const soundManager = new SoundManager();
 
+        // Critical alert sound function
+        function playCriticalAlertSound() {
+            const criticalAlertSound = new Audio('error.mp3');
+            criticalAlertSound.volume = 0.8;
+            
+            const playPromise = criticalAlertSound.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    console.log("🚨 Critical alert sound started");
+                }).catch(error => {
+                    console.log("🔇 Critical alert sound failed:", error);
+                    // Fallback to emergency sound
+                    soundManager.playEmergencySound();
+                });
+            }
+        }
+
         // Socket.IO connection
         console.log("🚀 Attempting to connect to server...");
         
-        const socket = io('http://localhost:5000', {
+        const socket = io('https://alerion-0ek5.onrender.com/', {
             transports: ['websocket', 'polling']
         });
 
@@ -828,12 +1047,73 @@
         const sensitivitySlider = document.getElementById("sensitivitySlider");
         const thresholdValue = document.getElementById("thresholdValue");
         const alertInfo = document.getElementById("alertInfo");
+        const addDriverBtn = document.getElementById("addDriverBtn");
+        const addDriverModal = document.getElementById("addDriverModal");
+        const closeModal = document.querySelector(".close-modal");
+        const cancelAddDriver = document.getElementById("cancelAddDriver");
+        const addDriverForm = document.getElementById("addDriverForm");
 
-        // Alert Settings
-        let alertThreshold = 10.0;
-        let lastAlertTime = 0;
-        let currentEAR = 0.0;
-        let currentSensitivity = 1.0;
+        // Modal functionality
+        addDriverBtn.addEventListener('click', () => {
+            addDriverModal.style.display = 'flex';
+        });
+
+        closeModal.addEventListener('click', () => {
+            addDriverModal.style.display = 'none';
+        });
+
+        cancelAddDriver.addEventListener('click', () => {
+            addDriverModal.style.display = 'none';
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', (event) => {
+            if (event.target === addDriverModal) {
+                addDriverModal.style.display = 'none';
+            }
+        });
+
+        // Add driver form submission
+        addDriverForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('driverName').value;
+            const phone = document.getElementById('driverPhone').value;
+            const vehicle = document.getElementById('driverVehicle').value;
+            
+            // Generate a new driver ID
+            const newId = drivers.length > 0 ? Math.max(...drivers.map(d => d.id)) + 1 : 1;
+            
+            // Add new driver
+            const newDriver = {
+                id: newId,
+                name: name,
+                vehicle: vehicle,
+                status: "safe",
+                location: "Not assigned",
+                phone: phone
+            };
+            
+            drivers.push(newDriver);
+            updateDriversList(drivers);
+            
+            // Reset form and close modal
+            addDriverForm.reset();
+            addDriverModal.style.display = 'none';
+            
+            // Add to history
+            addHistoryItem(`Added new driver: ${name} (${vehicle})`, 'open');
+        });
+
+        // Delete driver function
+        function deleteDriver(driverId) {
+            const driver = drivers.find(d => d.id === driverId);
+            if (driver && confirm(`Are you sure you want to delete ${driver.name}?`)) {
+                drivers = drivers.filter(d => d.id !== driverId);
+                updateDriversList(drivers);
+                addHistoryItem(`Deleted driver: ${driver.name}`, 'closed');
+            }
+        }
 
         // Sensitivity slider handler
         sensitivitySlider.addEventListener('input', function() {
@@ -881,18 +1161,18 @@
             connText.style.color = '#ef4444';
         });
 
-        // Handle eye status data with EAR values - FIXED VERSION
+        // Handle eye status data with EAR values
         socket.on('eye_status', (data) => {
             console.log('👁️ Eye status received:', data);
             
             const status = data.status;
             const duration = data.duration || 0;
-            const earValueData = data.ear_value || 0.0;  // FIXED: Changed variable name
+            const earValueData = data.ear_value || 0.0;
             const sensitivity = data.sensitivity || 1.0;
             
             // Update EAR display
             currentEAR = earValueData;
-            updateEARDisplay(earValueData, status);  // FIXED: Pass earValueData
+            updateEARDisplay(earValueData, status);
             currentEar.textContent = earValueData.toFixed(3);
             sensitivityValue.textContent = sensitivity.toFixed(1) + 'x';
             currentSensitivity = sensitivity;
@@ -902,7 +1182,7 @@
             // Only show alert if eyes are closed for MORE than threshold
             if (status === 'closed' && duration > alertThreshold) {
                 console.log(`🚨 ALERT: Eyes closed for ${duration}s (threshold: ${alertThreshold}s)`);
-                showAlertState(duration, earValueData);  // FIXED: Pass earValueData
+                showAlertState(duration, earValueData);
                 
                 // Play sound only once per alert (not continuously)
                 const currentTime = Date.now();
@@ -935,9 +1215,8 @@
             updateDriversList(data);
         });
 
-        // FIXED: updateEARDisplay function with correct variable names
         function updateEARDisplay(earValueData, status) {
-            // Update EAR value - FIXED: Use earValueData parameter
+            // Update EAR value
             earValue.textContent = earValueData.toFixed(3);
             
             // Update progress bar (EAR typically ranges from 0.1 to 0.4)
@@ -1019,19 +1298,24 @@
             }, 10000);
         }
 
-        function updateDriversList(drivers) {
+        function updateDriversList(driversData) {
             driversList.innerHTML = '';
             let activeCount = 0;
             
-            drivers.forEach(driver => {
+            const driversToShow = driversData || drivers;
+            
+            driversToShow.forEach(driver => {
                 if (driver.status !== 'offline') activeCount++;
                 
                 const driverItem = document.createElement('div');
                 driverItem.className = `driver-item ${driver.status === 'danger' ? 'alert' : driver.status === 'warning' ? 'warning' : ''}`;
                 
+                // Create initials for avatar
+                const initials = driver.name.split(' ').map(n => n[0]).join('').toUpperCase();
+                
                 driverItem.innerHTML = `
                     <div class="driver-info">
-                        <div class="driver-avatar">${driver.name.split(' ').map(n => n[0]).join('')}</div>
+                        <div class="driver-avatar">${initials}</div>
                         <div class="driver-details">
                             <div class="driver-name">${driver.name}</div>
                             <div class="driver-vehicle">${driver.vehicle} • ${driver.location}</div>
@@ -1042,6 +1326,7 @@
                         <div class="driver-actions">
                             <button class="action-btn contact" onclick="contactDriver('${driver.name}', '${driver.phone}')">Call</button>
                             <button class="action-btn view" onclick="viewDriverDetails(${driver.id})">View</button>
+                            <button class="action-btn delete" onclick="deleteDriver(${driver.id})">Delete</button>
                         </div>
                     </div>
                 `;
@@ -1065,7 +1350,10 @@
         }
 
         function viewDriverDetails(driverId) {
-            alert(`Viewing details for driver ${driverId}`);
+            const driver = drivers.find(d => d.id === driverId);
+            if (driver) {
+                alert(`Driver Details:\nName: ${driver.name}\nVehicle: ${driver.vehicle}\nPhone: ${driver.phone}\nLocation: ${driver.location}\nStatus: ${driver.status}`);
+            }
         }
 
         function addHistoryItem(message, status) {
@@ -1086,6 +1374,7 @@
 
         function updateAlertLevel(duration) {
             let level = 'Low', color = '#4ade80';
+            let previousLevel = alertLevel.textContent;
             
             if (duration >= alertThreshold && duration < alertThreshold + 5) { 
                 level = 'Medium'; color = '#f59e0b'; 
@@ -1095,6 +1384,27 @@
             }
             if (duration >= alertThreshold + 10) { 
                 level = 'Critical'; color = '#dc2626'; 
+                
+                // Play critical alert sound when level becomes Critical
+                if (previousLevel !== 'Critical') {
+                    console.log("🚨 CRITICAL ALERT LEVEL REACHED - PLAYING ALARM");
+                    playCriticalAlertSound();
+                    
+                    // Play sound repeatedly every 5 seconds during critical alert
+                    criticalAlertInterval = setInterval(() => {
+                        if (alertLevel.textContent === 'Critical') {
+                            playCriticalAlertSound();
+                        } else {
+                            clearInterval(criticalAlertInterval);
+                        }
+                    }, 5000);
+                }
+            } else {
+                // Clear interval if level is no longer critical
+                if (criticalAlertInterval) {
+                    clearInterval(criticalAlertInterval);
+                    criticalAlertInterval = null;
+                }
             }
             
             alertLevel.textContent = level;
@@ -1102,16 +1412,12 @@
         }
 
         // Initialize with sample drivers
-        updateDriversList([
-            {id: 1, name: "John Driver", vehicle: "Truck A123", status: "safe", location: "Highway I-95", phone: "+1-555-0101"},
-            {id: 2, name: "Sarah Wilson", vehicle: "Van B456", status: "warning", location: "Route 66", phone: "+1-555-0102"},
-            {id: 3, name: "Mike Johnson", vehicle: "Car C789", status: "danger", location: "City Center", phone: "+1-555-0103"}
-        ]);
+        updateDriversList(drivers);
 
         // Initialize alert settings
         updateAlertInfo();
 
-        console.log("🎯 Client initialized - EAR Detection System Ready");
+        console.log("🎯 Alerion Client initialized - Driver Safety Monitor Ready");
     </script>
 </body>
 </html>
