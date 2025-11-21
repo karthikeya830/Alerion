@@ -1013,10 +1013,10 @@
 
         // Socket.IO connection
         console.log("🚀 Attempting to connect to server...");
-        
-        const socket = io('https://alerion-0ek5.onrender.com/', {
+        const socket = io("wss://alerion-0ek5.onrender.com", {
             transports: ['websocket', 'polling']
         });
+
 
         // DOM elements
         const connDot = document.getElementById("connDot");
