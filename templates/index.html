@@ -1014,9 +1014,10 @@
         // Socket.IO connection
         console.log("🚀 Attempting to connect to server...");
         
-        const socket = io('http://localhost:5000', {
-            transports: ['websocket', 'polling']
-        });
+       const socket = io({
+    transports: ['websocket', 'polling']
+});
+
 
         // DOM elements
         const connDot = document.getElementById("connDot");
